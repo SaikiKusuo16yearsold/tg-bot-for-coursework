@@ -9,6 +9,7 @@ import pro.sky.telegrambot.repository.TaskRepository;
 import javax.print.DocFlavor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +38,6 @@ public class TaskService {
         if (matcher.find()) {
 
 
-
             String message = matcher.group(5); // Сообщение
 
             Task task = new Task();
@@ -54,11 +54,17 @@ public class TaskService {
     }
 
 
-    public List<Object> sendNotification(LocalDate date, LocalTime time){
-        LocalDateTime testTime = LocalDateTime.of(2025, 1, 1, 0, 0);
-        List<Task> tasks = taskRepository.findAllByDateAndTime(date, time);
+    public List<Object> sendNotification(LocalDate date, LocalTime time) {
+
         List<Object> chatIdsAndTexts = new ArrayList<>();
-        for (Task task : tasks) {
+        List<Task> tasks = taskRepository.findAll();
+        List<Task> needTasks = new ArrayList<>();
+        for (Task value : tasks) {
+            if (value.getTime().truncatedTo(ChronoUnit.MINUTES).compareTo(time.truncatedTo(ChronoUnit.MINUTES)) == 0) {
+                needTasks.add(value);
+            }
+        }
+        for (Task task : needTasks) {
             chatIdsAndTexts.add(task.getChatId());
             chatIdsAndTexts.add(task.getText());
             taskRepository.delete(task);
