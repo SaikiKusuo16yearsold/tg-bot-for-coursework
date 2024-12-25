@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.service.TaskService;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -58,8 +61,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Scheduled(cron = "0 0/1 * * * *")
     public void sendNotification() {
-        List<Object> task = taskService.sendNotification();
-        telegramBot.execute(new SendMessage(task.get(0), task.get(1).toString()));
+        List<Object> task = taskService.sendNotification(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
+        for (int i = 0; i < task.size(); i += 2) {
+            telegramBot.execute(new SendMessage(task.get(i), task.get(i + 1).toString()));
+        }
     }
-
 }

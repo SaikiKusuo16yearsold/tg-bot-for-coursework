@@ -1,7 +1,9 @@
 package pro.sky.telegrambot.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "notification_task") // Убедитесь, что имя таблицы соответствует вашей базе данных
@@ -13,7 +15,29 @@ public class Task {
     @Column(name = "chat_id")
     private long chatId; // Изменено на Integer
     private String text;
-    private LocalDateTime data; // Или используйте LocalDateTime
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    @Column(nullable = false)
+    private LocalDate date;
+
+    // время напоминания
+    @Column(nullable = false)
+    private LocalTime time;// Или используйте LocalDateTime
 
     // Конструкторы, геттеры и сеттеры
 
@@ -44,12 +68,6 @@ public class Task {
         this.text = text;
     }
 
-    public LocalDateTime getData() {
-        return data;
-    }
 
-    public void setData(LocalDateTime data) {
-        this.data = data;
-    }
 
 }
