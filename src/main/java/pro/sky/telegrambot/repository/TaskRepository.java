@@ -10,6 +10,5 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-//    @Query("SELECT * FROM your_table WHERE time = time")
-//    List<Task> findAllByDateAndTime(LocalDate date, LocalTime time);
+    List<Task> findAllByDateAndTime(LocalDate date, LocalTime time);
 }

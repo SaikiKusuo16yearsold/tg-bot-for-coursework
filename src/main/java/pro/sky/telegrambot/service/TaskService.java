@@ -6,17 +6,13 @@ import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.model.Task;
 import pro.sky.telegrambot.repository.TaskRepository;
 
-import javax.print.DocFlavor;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,19 +53,17 @@ public class TaskService {
     public List<Object> sendNotification(LocalDate date, LocalTime time) {
 
         List<Object> chatIdsAndTexts = new ArrayList<>();
-        List<Task> tasks = taskRepository.findAll();
-        List<Task> needTasks = new ArrayList<>();
-        for (Task value : tasks) {
-            if (value.getTime().truncatedTo(ChronoUnit.MINUTES).compareTo(time.truncatedTo(ChronoUnit.MINUTES)) == 0) {
-                needTasks.add(value);
-            }
-        }
-        for (Task task : needTasks) {
+        System.out.println(date);
+        System.out.println(time);
+        List<Task> tasks = taskRepository.findAllByDateAndTime(date, time.truncatedTo(ChronoUnit.MINUTES));
+        for (Task task : tasks) {
             chatIdsAndTexts.add(task.getChatId());
             chatIdsAndTexts.add(task.getText());
             taskRepository.delete(task);
         }
         return chatIdsAndTexts;
+
+
     }
 }
 
