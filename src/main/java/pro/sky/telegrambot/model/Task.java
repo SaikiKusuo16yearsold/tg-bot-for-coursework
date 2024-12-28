@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "notification_task") // Убедитесь, что имя таблицы соответствует вашей базе данных
+//@Table(name = "notification_task") // Убедитесь, что имя таблицы соответствует вашей базе данных
 public class Task {
 
     @Id

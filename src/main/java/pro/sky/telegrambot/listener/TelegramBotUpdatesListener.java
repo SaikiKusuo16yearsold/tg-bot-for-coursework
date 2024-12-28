@@ -61,7 +61,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Scheduled(cron = "0 0/1 * * * *")
     public void sendNotification() {
-        List<Object> task = taskService.sendNotification(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
+        List<Object> task = taskService.sendNotification(LocalDate.now(), LocalTime.now() );
         for (int i = 0; i < task.size(); i += 2) {
             telegramBot.execute(new SendMessage(task.get(i), task.get(i + 1).toString()));
         }
